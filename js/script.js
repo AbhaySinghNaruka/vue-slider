@@ -1,4 +1,4 @@
-const images = new Vue ({
+const app = new Vue ({
     el: '.container-blur',
     data: {
         arrImages: [
@@ -27,6 +27,76 @@ const images = new Vue ({
                 title: "Marvel's Avengers",
                 text: "Marvel's Avengers is an epic, third-person, action-adventure game that combines an original, cinematic story with single-player and co-operative gameplay.",
             },
+            /* {
+                text: 'TEST',
+            } */
         ],
+        timeSlider: 1.5 * 1000,
+        direction: 1,
+        activeIndex: 0,
+        idInterval: 0,
+        isAutoplayActive: true,
+        
+        /* activeIndex: 0,
+        a : 500000,*/
+    }, 
+    methods: {
+        changeSlide(direction) {
+            if (direction > 0) {
+                this.activeIndex++;
+                if (this.activeIndex === this.arrImages.length) {
+                    this.activeIndex = 0;
+                }
+            } else {
+                if (this.activeIndex === 0) {
+                    this.activeIndex = this.arrImages.length;
+                }
+                this.activeIndex--;
+            }
+            
+        },
+        setActiveIndex(index) {
+            this.activeIndex = index;
+        },
+        controlAutoplay() {
+            if (this.isAutoplayActive) {
+                this.isAutoplayActive
+            } else {
+                this.startAutoplay();
+                this.isAutoplayActive = true;
+            }
+        },
+        stopAutoplay() {
+           clearInterval(this.idInterval);
+           this.isAutoplayActive = false;
+        },
+        startAutoplay() {
+            this.idInterval = setInterval(() => this.changeSlide(this.direction), this.timeSlider);
+        },
+        invertAutoplay() {
+            this.direction *= -1;
+        },
+        stopAutoplay() {
+            this.stopAutoplay();
+        },
+        resumeAutoplay() {
+            if (this.isAutoplayActive) {
+                this.startAutoplay();
+            }
+        }
+    },
+    mounted() {
+        this.startAutoplay()
     }
+    /* methods : {
+        saySomething(str){
+            console.log(str);
+        }
+    },
+
+    mounted() {
+        this.saySomething('CIAO');
+    } */
+    
 });
+
